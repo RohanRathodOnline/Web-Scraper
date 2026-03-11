@@ -1,14 +1,20 @@
+import os
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 from scraper import run_scraper
 
 app = Flask(__name__)
-# Enable CORS so the frontend (Live Server) can access the backend
-CORS(app)
+
+# Enable CORS for all origins (frontend on GitHub Pages can access backend)
+CORS(app, resources={r"/*": {"origins": "*"}})
 
 @app.route("/")
 def home():
-    return "ScrapeDash Backend Running"
+    return "ScrapeDash Backend Running ✅"
+
+@app.route("/health")
+def health():
+    return jsonify({"status": "ok"}), 200
 
 @app.route("/scrape", methods=["POST"])
 def scrape():
@@ -60,5 +66,33 @@ def scrape():
     }), 200
 
 if __name__ == "__main__":
-    # Listen on localhost:5000 by default
-    app.run(debug=True)
+    # ✅ Render requires host="0.0.0.0" and uses its own PORT env variable
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port, debug=False)
+```
+
+---
+
+### ✅ What Changed & Why
+
+| Change | Reason |
+|--------|--------|
+| `import os` | Needed to read Render's `PORT` variable |
+| `host="0.0.0.0"` | **Critical** — makes app accessible publicly, not just localhost |
+| `port = int(os.environ.get("PORT", 5000))` | Render assigns its own port dynamically |
+| `debug=False` | Never run debug mode in production |
+| Added `/health` route | UptimeRobot will ping this to keep Render awake 24/7 |
+| Stronger CORS config | Ensures GitHub Pages frontend can always connect |
+
+---
+
+### 🔧 Also update `requirements.txt`
+
+Make sure it has all dependencies:
+```
+flask
+flask-cors
+requests
+beautifulsoup4
+pandas
+gunicorn

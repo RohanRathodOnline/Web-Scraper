@@ -66,7 +66,6 @@ def scrape():
     }), 200
 
 if __name__ == "__main__":
-    # ✅ Render requires host="0.0.0.0" and uses its own PORT env variable
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port, debug=False)
 ```
@@ -96,3 +95,4 @@ requests
 beautifulsoup4
 pandas
 gunicorn
+

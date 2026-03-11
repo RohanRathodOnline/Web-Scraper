@@ -1,0 +1,44 @@
+# Python cache
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Virtual environments
+venv/
+env/
+.venv/
+.env/
+
+# Environment variables (NEVER push secrets!)
+.env
+.env.local
+.env.production
+
+# IDE / Editor files
+.vscode/
+.idea/
+*.suo
+*.user
+
+# OS files
+.DS_Store          # Mac
+Thumbs.db          # Windows
+desktop.ini
+
+# Logs
+*.log
+logs/
+
+# Scraper output / data files
+*.csv
+*.json
+*.xlsx
+data/
+output/
+
+# Node (if any)
+node_modules/
+
+# Jupyter Notebooks checkpoints
+.ipynb_checkpoints/

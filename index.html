@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ScrapeDash — E-Commerce Product Web Scraper</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet"/>
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+<!-- ============================= NOTIFICATION ============================= -->
+<div class="notif" id="notif">
+  <span class="notif-icon" id="notif-icon">✅</span>
+  <span id="notif-text">Action completed</span>
+</div>
+
+<!-- ============================= OVERLAY ============================= -->
+<div class="overlay" id="overlay">
+  <div class="loading-card">
+    <div class="spinner"></div>
+    <div style="font-size:16px;font-weight:600;margin-bottom:8px;">Processing...</div>
+    <div style="font-size:13px;color:var(--text3)" id="overlay-text">Please wait</div>
+  </div>
+</div>
+
+<!-- ====================== PAGE 1: LANDING ====================== -->
+<div id="page-landing" class="page active">
+  <nav class="landing-nav">
+    <div class="landing-logo">
+      <div class="logo-icon">🕷️</div>
+      <div>
+        <div class="logo-text">ScrapeDash</div>
+      </div>
+    </div>
+    <div class="landing-nav-links">
+      <div class="nav-link active" onclick="scrollToTop()">Home</div>
+      <div class="nav-link" onclick="goTo('scraper')">Scraper</div>
+      <div class="nav-link" onclick="goTo('dashboard')">Dashboard</div>
+      <div class="nav-link" onclick="goTo('export')">Export</div>
+    </div>
+    <div style="display:flex;gap:10px;">
+      <button class="btn btn-outline btn-sm" onclick="goTo('dashboard')">📊 View Dashboard</button>
+      <button class="btn btn-primary btn-sm" onclick="goTo('scraper')">🚀 Start Scraping</button>
+      <button class="btn btn-outline btn-sm theme-toggle" onclick="toggleTheme()" title="Toggle theme">🌙</button>
+    </div>
+  </nav>
+
+  <div class="hero">
+    <div class="hero-left">
+      <div class="hero-badge">⚡ Powered by Python + BeautifulSoup</div>
+      <h1 class="hero-title">Automate Your<br/><span>Product Data</span><br/>Collection</h1>
+      <p class="hero-desc">Scrape e-commerce websites automatically. Extract product names, prices, and ratings in seconds. Export structured CSV data ready for analysis.</p>
+      <div class="hero-btns">
+        <button class="btn btn-primary btn-lg" onclick="goTo('scraper')">🚀 Start Scraping</button>
+        <button class="btn btn-outline btn-lg" onclick="goTo('dashboard')">📊 View Dashboard</button>
+      </div>
+      <div class="hero-tech">
+        <span class="tech-badge">Python</span>
+        <span class="tech-badge">BeautifulSoup</span>
+        <span class="tech-badge">Pandas</span>
+        <span class="tech-badge">Requests</span>
+        <span class="tech-badge">CSV</span>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="hero-visual">
+        <div class="mock-browser">
+          <div class="browser-bar">
+            <div class="browser-dots">
+              <div class="dot dot-red"></div>
+              <div class="dot dot-yellow"></div>
+              <div class="dot dot-green"></div>
+            </div>
+            <div class="browser-url">books.toscrape.com</div>
+          </div>
+          <div class="browser-content">
+            <div style="font-size:11px;color:var(--text3);margin-bottom:10px;font-family:'JetBrains Mono',monospace;">🕷️ Scraping page 3/5...</div>
+            <div class="mock-product">
+              <div class="mock-thumb">📗</div>
+              <div class="mock-info">
+                <div class="mock-name">A Light in the Attic</div>
+                <div class="mock-price">£51.77 ★★★★★</div>
+              </div>
+              <span class="badge badge-green" style="font-size:9px;">✓</span>
+            </div>
+            <div class="mock-product">
+              <div class="mock-thumb">📘</div>
+              <div class="mock-info">
+                <div class="mock-name">Tipping the Velvet</div>
+                <div class="mock-price">£53.74 ★★★★☆</div>
+              </div>
+              <span class="badge badge-green" style="font-size:9px;">✓</span>
+            </div>
+            <div class="mock-product">
+              <div class="mock-thumb">📕</div>
+              <div class="mock-info">
+                <div class="mock-name">Soumission</div>
+                <div class="mock-price">£22.85 ★★★☆☆</div>
+              </div>
+              <span class="badge badge-yellow" style="font-size:9px;animation:pulse-dot 1s infinite;">...</span>
+            </div>
+            <div style="margin-top:12px;">
+              <div style="font-size:10px;color:var(--text3);margin-bottom:4px;">Progress: 60%</div>
+              <div class="progress-bar"><div class="progress-fill" style="width:60%;"></div></div>
+            </div>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+          <div class="card" style="padding:14px;text-align:center;">
+            <div style="font-size:22px;font-weight:700;color:var(--blue3);">200</div>
+            <div style="font-size:11px;color:var(--text3);">Products Scraped</div>
+          </div>
+          <div class="card" style="padding:14px;text-align:center;">
+            <div style="font-size:22px;font-weight:700;color:var(--green);">£35.60</div>
+            <div style="font-size:11px;color:var(--text3);">Avg Price</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="feature-cards">
+    <div class="feature-card">
+      <div class="feature-icon">🤖</div>
+      <div class="feature-title">Automated Extraction</div>
+      <div class="feature-desc">Automatically scrapes product names, prices, and ratings from e-commerce websites without manual effort.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">📊</div>
+      <div class="feature-title">Data Dashboard</div>
+      <div class="feature-desc">Visualize scraped data with charts, filters, and searchable tables. Understand your data at a glance.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">📥</div>
+      <div class="feature-title">CSV Export</div>
+      <div class="feature-desc">Export all collected product data as a structured CSV file, ready for Excel, Python, or any data tool.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ====================== PAGE 2: SCRAPER CONTROL PANEL ====================== -->
+<div id="page-scraper" class="page">
+  <div class="layout">
+    <div class="sidebar">
+      <div class="sidebar-logo">
+        <div class="logo-icon">🕷️</div>
+        <div>
+          <div class="logo-text">ScrapeDash</div>
+          <div class="logo-sub">v1.0.0</div>
+        </div>
+      </div>
+      <div class="sidebar-nav">
+        <div class="nav-section">
+          <div class="nav-label">Navigation</div>
+          <div class="nav-item" onclick="goTo('landing')"><span class="icon">🏠</span>Home</div>
+          <div class="nav-item active" onclick="goTo('scraper')"><span class="icon">⚙️</span>Scraper</div>
+          <div class="nav-item" onclick="goTo('dashboard')"><span class="icon">📊</span>Dashboard<span class="nav-badge" id="sb-count">0</span></div>
+          <div class="nav-item" onclick="goTo('export')"><span class="icon">📥</span>Export</div>
+        </div>
+        <div class="nav-section">
+          <div class="nav-label">Stats</div>
+          <div class="nav-item"><span class="icon">📄</span>Total Pages: <b id="sb-pages" style="margin-left:auto;color:var(--blue3);">0</b></div>
+          <div class="nav-item"><span class="icon">⏱️</span>Duration: <b id="sb-time" style="margin-left:auto;color:var(--yellow);">0s</b></div>
+        </div>
+      </div>
+      <div class="sidebar-footer">
+        <div class="status-card">
+          <span class="status-dot"></span>
+          <span class="status-text" id="sb-status">System Ready</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="main">
+      <div class="topbar">
+        <div>
+          <div class="topbar-title">⚙️ Scraper Control Panel</div>
+          <div class="topbar-subtitle">Configure and run the web scraper</div>
+        </div>
+        <div class="topbar-actions">
+          <span class="badge badge-green"><span class="pulse">●</span> System Ready</span>
+          <button class="btn btn-outline btn-sm" onclick="goTo('landing')">← Home</button>
+          <button class="btn btn-outline btn-sm theme-toggle" onclick="toggleTheme()" title="Toggle theme">🌙</button>
+        </div>
+      </div>
+
+      <div class="content">
+        <!-- LIVE STATS -->
+        <div class="scraper-stats">
+          <div class="mini-stat">
+            <div class="mini-stat-val blue" id="stat-found">0</div>
+            <div class="mini-stat-lbl">Products Found</div>
+          </div>
+          <div class="mini-stat">
+            <div class="mini-stat-val yellow" id="stat-pages">0/0</div>
+            <div class="mini-stat-lbl">Pages Scraped</div>
+          </div>
+          <div class="mini-stat">
+            <div class="mini-stat-val green" id="stat-time">0s</div>
+            <div class="mini-stat-lbl">Time Elapsed</div>
+          </div>
+        </div>
+
+        <div class="scraper-grid">
+          <!-- CONFIGURATION CARD -->
+          <div class="card">
+            <div class="card-title"><span class="icon">🎯</span>Scraper Configuration</div>
+            <div class="input-group">
+              <label class="input-label">🌐 Target Website URL</label>
+              <input class="input-field" id="url-input" type="url"
+                placeholder="Paste product listing page URL here" />
+            </div>
+
+            <!-- Supported sites (collapsible) -->
+            <div style="margin-top:6px;">
+              <button id="supported-sites-toggle" class="btn btn-outline btn-sm" onclick="toggleSupportedSites()">Supported Sites ▼</button>
+              <div id="supported-sites-list" style="display:none;">
+                <div class="supported-site-item">
+                  <span class="supported-site-check">✔</span>
+                  <span class="supported-site-text">Books To Scrape — <a href="https://books.toscrape.com" target="_blank">https://books.toscrape.com</a></span>
+                  <button class="copy-link-btn" data-url="https://books.toscrape.com" title="Copy link" aria-label="Copy link">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                      <path d="M16 4h-1.5a1.5 1.5 0 0 0-3 0H10a2 2 0 0 0-2 2v1H6a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                      <rect x="8" y="2" width="8" height="4" rx="1" fill="currentColor"/>
+                    </svg>
+                  </button>
+                </div>
+                <div class="supported-site-item">
+                  <span class="supported-site-check">✔</span>
+                  <span class="supported-site-text">WebScraper Test Site — <a href="https://webscraper.io/test-sites/e-commerce/static" target="_blank">https://webscraper.io/test-sites/e-commerce/static</a></span>
+                  <button class="copy-link-btn" data-url="https://webscraper.io/test-sites/e-commerce/static" title="Copy link" aria-label="Copy link">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                      <path d="M16 4h-1.5a1.5 1.5 0 0 0-3 0H10a2 2 0 0 0-2 2v1H6a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                      <rect x="8" y="2" width="8" height="4" rx="1" fill="currentColor"/>
+                    </svg>
+                  </button>
+                </div>
+                <div class="supported-site-item">
+                  <span class="supported-site-check">✔</span>
+                  <span class="supported-site-text">ScrapingClub Store — <a href="https://scrapingclub.com/exercise/list_basic/" target="_blank">https://scrapingclub.com/exercise/list_basic/</a></span>
+                  <button class="copy-link-btn" data-url="https://scrapingclub.com/exercise/list_basic/" title="Copy link" aria-label="Copy link">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                      <path d="M16 4h-1.5a1.5 1.5 0 0 0-3 0H10a2 2 0 0 0-2 2v1H6a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                      <rect x="8" y="2" width="8" height="4" rx="1" fill="currentColor"/>
+                    </svg>
+                  </button>
+                </div>
+                <div class="supported-site-item">
+                  <span class="supported-site-check">✔</span>
+                  <span class="supported-site-text">Quotes To Scrape — <a href="https://quotes.toscrape.com" target="_blank">https://quotes.toscrape.com</a></span>
+                  <button class="copy-link-btn" data-url="https://quotes.toscrape.com" title="Copy link" aria-label="Copy link">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                      <path d="M16 4h-1.5a1.5 1.5 0 0 0-3 0H10a2 2 0 0 0-2 2v1H6a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                      <rect x="8" y="2" width="8" height="4" rx="1" fill="currentColor"/>
+                    </svg>
+                  </button>
+                </div>
+                <div class="supported-site-item">
+                  <span class="supported-site-check">✔</span>
+                  <span class="supported-site-text">Fake Jobs Example — <a href="https://realpython.github.io/fake-jobs/" target="_blank">https://realpython.github.io/fake-jobs/</a></span>
+                  <button class="copy-link-btn" data-url="https://realpython.github.io/fake-jobs/" title="Copy link" aria-label="Copy link">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                      <path d="M16 4h-1.5a1.5 1.5 0 0 0-3 0H10a2 2 0 0 0-2 2v1H6a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                      <rect x="8" y="2" width="8" height="4" rx="1" fill="currentColor"/>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="input-group">
+              <label class="input-label">📄 Number of Pages to Scrape</label>
+              <select class="input-field" id="pages-input">
+                <option value="1">1 Page (~20 products)</option>
+                <option value="2">2 Pages (~40 products)</option>
+                <option value="3" selected>3 Pages (~60 products)</option>
+                <option value="5">5 Pages (~100 products)</option>
+                <option value="10">10 Pages (~200 products)</option>
+              </select>
+            </div>
+            <div class="toggle-wrap">
+              <label class="toggle">
+                <input type="checkbox" id="multi-toggle" checked/>
+                <span class="toggle-slider"></span>
+              </label>
+              <span class="toggle-label">Enable Multi-Page Scraping</span>
+            </div>
+            <div class="toggle-wrap">
+              <label class="toggle">
+                <input type="checkbox" id="filter-toggle"/>
+                <span class="toggle-slider"></span>
+              </label>
+              <span class="toggle-label">Filter by Minimum Rating (3+)</span>
+            </div>
+            <div style="display:flex;gap:10px;margin-top:8px;">
+              <button class="btn btn-primary" style="flex:1;" id="run-btn" onclick="startScraper()">🚀 Run Scraper</button>
+              <button class="btn btn-danger btn-sm" id="stop-btn" onclick="stopScraper()" disabled>⏹ Stop</button>
+            </div>
+          </div>
+
+          <!-- STATUS CARD -->
+          <div class="card">
+            <div class="card-title"><span class="icon">📡</span>Scraping Status</div>
+            <div style="margin-bottom:14px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+                <span id="status-label" class="badge badge-blue">⏸ Idle</span>
+                <span style="font-size:12px;color:var(--text3);" id="progress-text">0%</span>
+              </div>
+              <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill" style="width:0%;"></div>
+              </div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;">
+              <div style="background:var(--bg3);border-radius:8px;padding:10px;text-align:center;">
+                <div style="font-size:18px;font-weight:700;color:var(--blue3);" id="live-found">0</div>
+                <div style="font-size:10px;color:var(--text3);">Products</div>
+              </div>
+              <div style="background:var(--bg3);border-radius:8px;padding:10px;text-align:center;">
+                <div style="font-size:18px;font-weight:700;color:var(--yellow);" id="live-page">0</div>
+                <div style="font-size:10px;color:var(--text3);">Current Page</div>
+              </div>
+            </div>
+            <button class="btn btn-success" style="width:100%;margin-top:4px;" onclick="goTo('dashboard')" id="view-btn" disabled>📊 View Results</button>
+          </div>
+        </div>
+
+        <!-- TERMINAL LOG -->
+        <div class="card">
+          <div class="card-title" style="justify-content:space-between;">
+            <span><span class="icon">🖥️</span>Live Scraper Log</span>
+            <button class="btn btn-outline btn-sm" onclick="clearLog()">🗑 Clear</button>
+          </div>
+          <div class="terminal" id="terminal">
+            <div class="log-line"><span class="log-time">[00:00]</span> <span class="log-info">ScrapeDash v1.0.0 initialized</span></div>
+            <div class="log-line"><span class="log-time">[00:00]</span> <span class="log-success">✓ System ready — awaiting configuration</span></div>
+            <div class="log-line"><span class="log-time">[00:00]</span> <span class="log-info">ℹ Enter a URL and press Run Scraper to begin</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ====================== PAGE 3: DATA DASHBOARD ====================== -->
+<div id="page-dashboard" class="page">
+  <div class="layout">
+    <div class="sidebar">
+      <div class="sidebar-logo">
+        <div class="logo-icon">🕷️</div>
+        <div><div class="logo-text">ScrapeDash</div><div class="logo-sub">v1.0.0</div></div>
+      </div>
+      <div class="sidebar-nav">
+        <div class="nav-section">
+          <div class="nav-label">Navigation</div>
+          <div class="nav-item" onclick="goTo('landing')"><span class="icon">🏠</span>Home</div>
+          <div class="nav-item" onclick="goTo('scraper')"><span class="icon">⚙️</span>Scraper</div>
+          <div class="nav-item active" onclick="goTo('dashboard')"><span class="icon">📊</span>Dashboard<span class="nav-badge" id="sb-count2">0</span></div>
+          <div class="nav-item" onclick="goTo('export')"><span class="icon">📥</span>Export</div>
+        </div>
+      </div>
+      <div class="sidebar-footer">
+        <div class="status-card">
+          <span class="status-dot"></span>
+          <span class="status-text">Data Loaded</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="main">
+      <div class="topbar">
+        <div>
+          <div class="topbar-title">📊 Product Data Dashboard</div>
+          <div class="topbar-subtitle">Analyze and explore scraped product data</div>
+        </div>
+        <div class="topbar-actions">
+          <button class="btn btn-outline btn-sm" onclick="goTo('scraper')">⚙️ Scraper</button>
+          <button class="btn btn-success btn-sm" onclick="goTo('export')">📥 Export CSV</button>
+          <button class="btn btn-outline btn-sm theme-toggle" onclick="toggleTheme()" title="Toggle theme">🌙</button>
+        </div>
+      </div>
+
+      <div class="content">
+        <!-- KPI CARDS -->
+        <div class="stats-grid">
+          <div class="stat-card blue">
+            <div class="stat-icon">📦</div>
+            <div class="stat-label">Total Products</div>
+            <div class="stat-value blue" id="kpi-total">0</div>
+            <div class="stat-change neutral" id="kpi-pages">From 0 pages</div>
+          </div>
+          <div class="stat-card green">
+            <div class="stat-icon">💰</div>
+            <div class="stat-label">Average Price</div>
+            <div class="stat-value green" id="kpi-avg">£0.00</div>
+            <div class="stat-change up" id="kpi-range">Range: £0 - £0</div>
+          </div>
+          <div class="stat-card yellow">
+            <div class="stat-icon">⭐</div>
+            <div class="stat-label">Avg Rating</div>
+            <div class="stat-value yellow" id="kpi-rating">0.0</div>
+            <div class="stat-change neutral">Out of 5 stars</div>
+          </div>
+          <div class="stat-card purple">
+            <div class="stat-icon">🏆</div>
+            <div class="stat-label">5-Star Products</div>
+            <div class="stat-value purple" id="kpi-5star">0</div>
+            <div class="stat-change neutral" id="kpi-5pct">0% of total</div>
+          </div>
+        </div>
+
+        <!-- CHARTS -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;">
+          <div class="card">
+            <div class="card-title"><span class="icon">📊</span>Price Distribution</div>
+            <div class="chart-bars" id="price-chart">
+              <div style="color:var(--text3);font-size:13px;align-self:center;text-align:center;width:100%;">Run the scraper to see data</div>
+            </div>
+            <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--text3);padding:0 4px;" id="chart-labels"></div>
+          </div>
+          <div class="card">
+            <div class="card-title"><span class="icon">🍩</span>Rating Distribution</div>
+            <div id="donut-area" style="text-align:center;padding:10px 0;">
+              <div style="color:var(--text3);font-size:13px;">Run the scraper to see data</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PRODUCT TABLE -->
+        <div class="card" style="padding:0;overflow:hidden;">
+          <div style="padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+            <div style="font-size:15px;font-weight:600;">📋 Product List</div>
+            <div class="toolbar" style="margin:0;">
+              <div class="search-box">
+                <span class="search-icon">🔍</span>
+                <input type="text" placeholder="Search products..." id="search-input" oninput="filterTable()"/>
+              </div>
+              <select class="input-field" style="width:160px;padding:9px 12px;" id="rating-filter" onchange="filterTable()">
+                <option value="0">All Ratings</option>
+                <option value="5">⭐⭐⭐⭐⭐ 5 Stars</option>
+                <option value="4">⭐⭐⭐⭐ 4+ Stars</option>
+                <option value="3">⭐⭐⭐ 3+ Stars</option>
+                <option value="2">⭐⭐ 2+ Stars</option>
+                <option value="1">⭐ 1+ Stars</option>
+              </select>
+              <select class="input-field" style="width:140px;padding:9px 12px;" id="sort-filter" onchange="filterTable()">
+                <option value="default">Sort: Default</option>
+                <option value="price-asc">Price: Low→High</option>
+                <option value="price-desc">Price: High→Low</option>
+                <option value="rating-desc">Rating: High→Low</option>
+                <option value="name-asc">Name: A→Z</option>
+              </select>
+              <span class="badge badge-blue" id="showing-count">Showing 0</span>
+            </div>
+          </div>
+          <div class="table-wrap" style="border:none;border-radius:0;">
+            <table>
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Product Name</th>
+                  <th>Price</th>
+                  <th>Rating</th>
+                  <th>Stars</th>
+                  <th>Category</th>
+                </tr>
+              </thead>
+              <tbody id="product-tbody">
+                <tr><td colspan="6" style="text-align:center;color:var(--text3);padding:40px;">No data yet — run the scraper first 🕷️</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ====================== PAGE 4: EXPORT ====================== -->
+<div id="page-export" class="page">
+  <div class="layout">
+    <div class="sidebar">
+      <div class="sidebar-logo">
+        <div class="logo-icon">🕷️</div>
+        <div><div class="logo-text">ScrapeDash</div><div class="logo-sub">v1.0.0</div></div>
+      </div>
+      <div class="sidebar-nav">
+        <div class="nav-section">
+          <div class="nav-label">Navigation</div>
+          <div class="nav-item" onclick="goTo('landing')"><span class="icon">🏠</span>Home</div>
+          <div class="nav-item" onclick="goTo('scraper')"><span class="icon">⚙️</span>Scraper</div>
+          <div class="nav-item" onclick="goTo('dashboard')"><span class="icon">📊</span>Dashboard<span class="nav-badge" id="sb-count3">0</span></div>
+          <div class="nav-item active" onclick="goTo('export')"><span class="icon">📥</span>Export</div>
+        </div>
+      </div>
+      <div class="sidebar-footer">
+        <div class="status-card">
+          <span class="status-dot"></span>
+          <span class="status-text">Ready to Export</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="main">
+      <div class="topbar">
+        <div>
+          <div class="topbar-title">📥 Export Dataset</div>
+          <div class="topbar-subtitle">Download your scraped data as CSV</div>
+        </div>
+        <div class="topbar-actions">
+          <button class="btn btn-outline btn-sm" onclick="goTo('dashboard')">← Dashboard</button>
+          <button class="btn btn-outline btn-sm theme-toggle" onclick="toggleTheme()" title="Toggle theme">🌙</button>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="export-hero">
+          <div class="export-icon">📄</div>
+          <div class="export-title">products.csv — Ready to Download</div>
+          <div class="export-desc">Your scraped dataset is ready. Download it as a CSV file for use in Excel, Python, R, or any data tool.</div>
+          <div class="export-meta">
+            <div class="export-meta-item">
+              <div class="export-meta-val" id="exp-records">0</div>
+              <div class="export-meta-lbl">Total Records</div>
+            </div>
+            <div class="export-meta-item">
+              <div class="export-meta-val" id="exp-pages">0</div>
+              <div class="export-meta-lbl">Pages Scraped</div>
+            </div>
+            <div class="export-meta-item">
+              <div class="export-meta-val" id="exp-size">0 KB</div>
+              <div class="export-meta-lbl">File Size</div>
+            </div>
+            <div class="export-meta-item">
+              <div class="export-meta-val" id="exp-time">0s</div>
+              <div class="export-meta-lbl">Scrape Duration</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+            <button class="btn btn-success btn-lg" onclick="downloadCSV()">⬇️ Download CSV</button>
+            <button class="btn btn-outline btn-lg" onclick="copyCSV()">📋 Copy to Clipboard</button>
+            <button class="btn btn-outline btn-lg" onclick="downloadJSON()">📦 Download JSON</button>
+          </div>
+        </div>
+
+        <!-- FORMAT CARDS -->
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:24px;">
+          <div class="card" style="text-align:center;cursor:pointer;" onclick="downloadCSV()">
+            <div style="font-size:32px;margin-bottom:10px;">📊</div>
+            <div style="font-weight:600;margin-bottom:4px;">CSV Format</div>
+            <div style="font-size:12px;color:var(--text3);margin-bottom:12px;">Compatible with Excel, Google Sheets, Pandas</div>
+            <span class="badge badge-green">✓ Recommended</span>
+          </div>
+          <div class="card" style="text-align:center;cursor:pointer;" onclick="downloadJSON()">
+            <div style="font-size:32px;margin-bottom:10px;">📦</div>
+            <div style="font-weight:600;margin-bottom:4px;">JSON Format</div>
+            <div style="font-size:12px;color:var(--text3);margin-bottom:12px;">Perfect for APIs and web applications</div>
+            <span class="badge badge-blue">Available</span>
+          </div>
+          <div class="card" style="text-align:center;">
+            <div style="font-size:32px;margin-bottom:10px;">🗄️</div>
+            <div style="font-weight:600;margin-bottom:4px;">SQLite DB</div>
+            <div style="font-size:12px;color:var(--text3);margin-bottom:12px;">Structured database for advanced queries</div>
+            <span class="badge badge-yellow">Coming Soon</span>
+          </div>
+        </div>
+
+        <!-- PREVIEW TABLE -->
+        <div class="card" style="padding:0;overflow:hidden;">
+          <div style="padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;">
+            <div style="font-size:15px;font-weight:600;">👁️ Dataset Preview (First 10 Records)</div>
+            <span class="badge badge-blue" id="preview-count">0 total records</span>
+          </div>
+          <div class="table-wrap" style="border:none;border-radius:0;">
+            <table>
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Product Name</th>
+                  <th>Price (£)</th>
+                  <th>Rating</th>
+                  <th>Stars</th>
+                </tr>
+              </thead>
+              <tbody id="preview-tbody">
+                <tr><td colspan="5" style="text-align:center;color:var(--text3);padding:40px;">No data yet — run the scraper first 🕷️</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- SUMMARY -->
+        <div class="card" style="margin-top:20px;">
+          <div class="card-title"><span class="icon">📈</span>Export Summary</div>
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;text-align:center;">
+            <div><div style="font-size:20px;font-weight:700;color:var(--blue3);" id="sum-records">0</div><div style="font-size:11px;color:var(--text3);">Records Scraped</div></div>
+            <div><div style="font-size:20px;font-weight:700;color:var(--yellow);" id="sum-pages">0</div><div style="font-size:11px;color:var(--text3);">Pages Processed</div></div>
+            <div><div style="font-size:20px;font-weight:700;color:var(--green);" id="sum-avg">£0.00</div><div style="font-size:11px;color:var(--text3);">Average Price</div></div>
+            <div><div style="font-size:20px;font-weight:700;color:var(--purple);" id="sum-rating">0.0 ⭐</div><div style="font-size:11px;color:var(--text3);">Average Rating</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- JavaScript (loaded at end for performance) -->
+<script src="script.js"></script>
+
+</body>
+</html>

@@ -73,11 +73,11 @@ async function startScraper() {
     scrapedProducts = [];
     showNotif("Starting real scraper...", "success");
 
-    const response = await fetch("http://127.0.0.1:5000/scrape", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ url: url, pages: pages })
-    });
+    const response = await fetch("https://your-backend-name.onrender.com/scrape", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ url: url, pages: pages })
+ });
 
     if (!response.ok) throw new Error(`Network response was not ok (${response.status})`);
 
